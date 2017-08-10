@@ -13,26 +13,19 @@ import android.view.SurfaceView;
 
 class Game extends SurfaceView implements SurfaceHolder.Callback {
 
-    public static Context CURRENT_CONTEXT;
+    //TODO : use DI instead of a static context
+    public static Context CURRENT_CONTEXT; // memory leak
     private GameThread thread;
 
     SceneManager manager;
 
     public Game(Context context) {
         super(context);
-
         getHolder().addCallback(this);
-
         CURRENT_CONTEXT = context;
-
         thread = new GameThread(getHolder(), this);
-
         manager = new SceneManager();
-
-
         setFocusable(true);
-
-
     }
 
     @Override
@@ -42,15 +35,11 @@ class Game extends SurfaceView implements SurfaceHolder.Callback {
     }
 
     @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-
-    }
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {}
 
     @Override
     public void surfaceDestroyed(SurfaceHolder holder) {
-
         boolean retry = true;
-
         while (retry) {
             try {
                 thread.setRunning(false);
